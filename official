@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mame photography</title>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fbfcff; /* 透明感のある白 */
+            --main-color: #433d3c;
+            --accent-color: #8fa9bc; /* 空の色をイメージした淡い青 */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--main-color);
+            font-family: 'Shippori Mincho', serif;
+            overflow-x: hidden;
+        }
+
+        /* オープニングアニメーション */
+        .loading {
+            position: fixed;
+            inset: 0;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1.5s ease;
+        }
+        .loading-text {
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
+            opacity: 0;
+            animation: fadeInOut 3s forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            40% { opacity: 1; transform: translateY(0); }
+            70% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* メインビジュアル */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-img {
+            width: 80%;
+            max-width: 900px;
+            height: 70vh;
+            object-fit: cover;
+            opacity: 0;
+            transform: scale(1.05);
+            transition: all 2.5s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .hero-img.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* コンセプトセクション */
+        .concept-section {
+            padding: 150px 20px;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .concept-title {
+            font-size: 1.5rem;
+            margin-bottom: 50px;
+            letter-spacing: 0.4em;
+            font-weight: 500;
+        }
+        .concept-text {
+            line-height: 2.5;
+            letter-spacing: 0.15em;
+            font-size: 0.95rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.5s ease;
+        }
+        .concept-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* シンプルなメニュー */
+        nav {
+            position: fixed;
+            top: 30px;
+            right: 40px;
+            z-index: 100;
+            display: flex;
+            gap: 30px;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--main-color);
+            transition: opacity 0.3s;
+        }
+        nav a:hover { opacity: 0.5; }
+
+        footer {
+            padding: 100px 0 50px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #aaa;
+            letter-spacing: 0.2em;
+        }
+
+        @media (max-width: 768px) {
+            .hero-img { width: 90%; height: 60vh; }
+            nav { right: 20px; top: 20px; font-size: 0.65rem; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading" id="loading">
+        <div class="loading-text">わたしの　たからもの</div>
+    </div>
+
+    <nav>
+        <a href="#about">ABOUT</a>
+        <a href="#gallery">GALLERY</a>
+        <a href="#price">PRICE</a>
+        <a href="#contact">CONTACT</a>
+    </nav>
+
+    <div class="hero">
+        <img src="DSC06066 編集済み 1-1.jpg" alt="main" class="hero-img" id="hero-img">
+    </div>
+
+    <div class="concept-section">
+        <h2 class="concept-title">Concept</h2>
+        <div class="concept-text" id="concept-text">
+            何気ない日の、柔らかな光。<br>
+            ふとした瞬間に見せる、愛おしい表情。<br><br>
+            写真を見返したとき、<br>
+            その時の匂いや、体温まで思い出せるように。<br><br>
+            「わたしの　たからもの」を、<br>
+            そのままの形で未来へ残すお手伝いをします。
+        </div>
+    </div>
+
+    <footer>© MAME PHOTOGRAPHY</footer>
+
+    <script>
+        // オープニングアニメーションの制御
+        window.addEventListener('load', () => {
+            const loading = document.getElementById('loading');
+            const heroImg = document.getElementById('hero-img');
+            
+            setTimeout(() => {
+                loading.style.opacity = '0';
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    heroImg.classList.add('active');
+                }, 1500);
+            }, 3000);
+        });
+
+        // スクロール時のアニメーション
+        window.addEventListener('scroll', () => {
+            const conceptText = document.getElementById('concept-text');
+            const rect = conceptText.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.8) {
+                conceptText.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>
