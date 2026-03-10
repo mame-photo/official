@@ -7,179 +7,160 @@
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #fbfcff; /* 透明感のある白 */
-            --main-color: #433d3c;
-            --accent-color: #8fa9bc; /* 空の色をイメージした淡い青 */
+            --bg-color: #ffffff;
+            --text-color: #433d3c;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background-color: var(--bg-color);
-            color: var(--main-color);
+            color: var(--text-color);
             font-family: 'Shippori Mincho', serif;
             overflow-x: hidden;
         }
 
-        /* オープニングアニメーション */
-        .loading {
-            position: fixed;
-            inset: 0;
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1.5s ease;
-        }
-        .loading-text {
-            font-size: 1.2rem;
-            letter-spacing: 0.3em;
-            opacity: 0;
-            animation: fadeInOut 3s forwards;
-        }
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(10px); }
-            40% { opacity: 1; transform: translateY(0); }
-            70% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        /* メインビジュアル */
-        .hero {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-img {
-            width: 80%;
-            max-width: 900px;
-            height: 70vh;
-            object-fit: cover;
-            opacity: 0;
-            transform: scale(1.05);
-            transition: all 2.5s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-        }
-        .hero-img.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* コンセプトセクション */
-        .concept-section {
-            padding: 150px 20px;
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .concept-title {
-            font-size: 1.5rem;
-            margin-bottom: 50px;
-            letter-spacing: 0.4em;
-            font-weight: 500;
-        }
-        .concept-text {
-            line-height: 2.5;
-            letter-spacing: 0.15em;
-            font-size: 0.95rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1.5s ease;
-        }
-        .concept-text.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* シンプルなメニュー */
+        /* 固定メニュー */
         nav {
             position: fixed;
-            top: 30px;
-            right: 40px;
+            top: 0; width: 100%;
+            display: flex; justify-content: center; gap: 20px;
+            padding: 20px 0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px);
             z-index: 100;
-            display: flex;
-            gap: 30px;
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
+            font-size: 0.7rem; letter-spacing: 0.2em;
+            opacity: 0; /* 最初は隠す */
         }
-        nav a {
-            text-decoration: none;
-            color: var(--main-color);
-            transition: opacity 0.3s;
-        }
-        nav a:hover { opacity: 0.5; }
+        nav.show { opacity: 1; transition: opacity 1.5s ease; }
+        nav a { text-decoration: none; color: var(--text-color); }
 
-        footer {
-            padding: 100px 0 50px;
+        /* メインビジュアルエリア */
+        .hero {
+            height: 92vh; /* コンセプトを少し見せるために少し短く設定 */
+            display: flex; justify-content: center; align-items: center;
+            position: relative; padding: 4vh 20px;
+        }
+
+        /* 背景：青空の写真 */
+        .bg-photo {
+            position: absolute;
+            width: calc(100% - 40px); height: calc(100% - 40px);
+            max-width: 500px;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 2s ease 1.5s;
+        }
+
+        /* ① わたしのたからもの */
+        .title-img {
+            position: absolute;
+            width: 200px;
+            transform: translateX(-30px);
+            opacity: 0;
+            z-index: 10;
+        }
+
+        /* ② ロゴ */
+        .logo-img {
+            position: absolute;
+            width: 120px;
+            bottom: 15%;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        /* アニメーション用クラス */
+        .fade-in-side { opacity: 1; transform: translateX(0); transition: all 1.5s ease; }
+        .fade-in-slow { opacity: 1; transition: opacity 2s ease 1s; }
+        .visible { opacity: 1; }
+
+        /* コンセプトセクション（見切れ演出） */
+        .content-wrapper { padding: 0 30px; }
+        
+        .concept-section {
+            padding: 40px 0 100px;
             text-align: center;
-            font-size: 0.7rem;
-            color: #aaa;
-            letter-spacing: 0.2em;
+        }
+        .concept-text {
+            line-height: 2.5; font-size: 0.9rem;
+            letter-spacing: 0.1em;
         }
 
-        @media (max-width: 768px) {
-            .hero-img { width: 90%; height: 60vh; }
-            nav { right: 20px; top: 20px; font-size: 0.65rem; gap: 15px; }
+        /* ⑤ 横スクロールギャラリー */
+        .gallery-h {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 15px;
+            padding-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
         }
+        .gallery-h::-webkit-scrollbar { display: none; }
+        .gallery-item {
+            flex: 0 0 80%;
+            scroll-snap-align: center;
+        }
+        .gallery-item img {
+            width: 100%; height: 50vh;
+            object-fit: cover;
+        }
+
+        footer { padding: 50px 0; text-align: center; font-size: 0.6rem; color: #ccc; }
     </style>
 </head>
 <body>
 
-    <div class="loading" id="loading">
-        <div class="loading-text">わたしの　たからもの</div>
-    </div>
-
-    <nav>
-        <a href="#about">ABOUT</a>
-        <a href="#gallery">GALLERY</a>
-        <a href="#price">PRICE</a>
-        <a href="#contact">CONTACT</a>
+    <nav id="main-nav">
+        <a href="#">ABOUT</a>
+        <a href="#">GALLERY</a>
+        <a href="#">PRICE</a>
+        <a href="#">CONTACT</a>
     </nav>
 
     <div class="hero">
-        <img src="DSC06066 編集済み 1-1.jpg" alt="main" class="hero-img" id="hero-img">
+        <img src="DSC06066 編集済み 1-1.jpg" alt="背景" class="bg-photo" id="bg-photo">
+        <img src="わたしのたからもの.png" alt="タイトル" class="title-img" id="title-img">
+        <img src="10.png" alt="ロゴ" class="logo-img" id="logo-img">
     </div>
 
-    <div class="concept-section">
-        <h2 class="concept-title">Concept</h2>
-        <div class="concept-text" id="concept-text">
-            わたしの　たからもの。<br>
-            それは　あの日の記憶。<br><br>
-        　　 生きててよかった。<br>
-            生まれてきてくれてよかった。<br><br>
-            わたしの　たからもの。<br>
-            みんなの、たからもの。
+    <div class="content-wrapper">
+        <div class="concept-section">
+            <div class="concept-text">
+                <p>何気ない一瞬が、<br>いつかかけがえのない記憶になる。</p>
+                <p>そのままの、きみがいい。</p>
+            </div>
         </div>
+
+        <div class="gallery-h">
+            <div class="gallery-item"><img src="DSC06066 編集済み 1-1.jpg"></div>
+            <div class="gallery-item"><img src="マンスリーフォトバナー.jpg"></div>
+            </div>
     </div>
 
     <footer>© MAME PHOTOGRAPHY</footer>
 
     <script>
-        // オープニングアニメーションの制御
         window.addEventListener('load', () => {
-            const loading = document.getElementById('loading');
-            const heroImg = document.getElementById('hero-img');
-            
-            setTimeout(() => {
-                loading.style.opacity = '0';
-                setTimeout(() => {
-                    loading.style.display = 'none';
-                    heroImg.classList.add('active');
-                }, 1500);
-            }, 3000);
-        });
+            const title = document.getElementById('title-img');
+            const logo = document.getElementById('logo-img');
+            const bg = document.getElementById('bg-photo');
+            const nav = document.getElementById('main-nav');
 
-        // スクロール時のアニメーション
-        window.addEventListener('scroll', () => {
-            const conceptText = document.getElementById('concept-text');
-            const rect = conceptText.getBoundingClientRect();
-            if (rect.top < window.innerHeight * 0.8) {
-                conceptText.classList.add('show');
-            }
+            // ① サイドからタイトル
+            setTimeout(() => {
+                title.classList.add('fade-in-side');
+            }, 500);
+
+            // ② ロゴを浮かび上がらせる
+            setTimeout(() => {
+                logo.classList.add('fade-in-slow');
+            }, 1200);
+
+            // ③ 背景写真とメニューを表示
+            setTimeout(() => {
+                bg.classList.add('visible');
+                nav.classList.add('show');
+            }, 2000);
         });
     </script>
 </body>
