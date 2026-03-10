@@ -9,6 +9,7 @@
         :root {
             --bg-color: #ffffff;
             --text-color: #433d3c;
+            --accent-color: #cddce5; /* 薄い空色 */
         }
 
         body, html {
@@ -17,6 +18,7 @@
             color: var(--text-color);
             font-family: 'Shippori Mincho', serif;
             overflow-x: hidden;
+            scroll-behavior: smooth; /* スムーズスクロール */
         }
 
         /* 固定メニュー */
@@ -29,92 +31,120 @@
             backdrop-filter: blur(5px);
             z-index: 100;
             font-size: 0.7rem; letter-spacing: 0.2em;
-            opacity: 0; /* 最初は隠す */
+            opacity: 0;
         }
         nav.show { opacity: 1; transition: opacity 1.5s ease; }
         nav a { text-decoration: none; color: var(--text-color); }
 
         /* メインビジュアルエリア */
         .hero {
-            height: 92vh; /* コンセプトを少し見せるために少し短く設定 */
+            height: 90vh; /* 少し見切れさせてスクロールを誘導 */
             display: flex; justify-content: center; align-items: center;
-            position: relative; padding: 4vh 20px;
+            position: relative; padding: 5vh 20px;
         }
 
-        /* 背景：青空の写真 */
+        /* 背景：青空の写真（少し小さく調整） */
         .bg-photo {
             position: absolute;
-            width: calc(100% - 40px); height: calc(100% - 40px);
-            max-width: 500px;
+            width: calc(100% - 80px); /* 余白を広げた */
+            height: calc(100% - 120px);
+            max-width: 450px;
             object-fit: cover;
             opacity: 0;
-            transition: opacity 2s ease 1.5s;
+            transition: opacity 1.8s ease 1s; /* ロゴと同時に表示 */
         }
 
-        /* ① わたしのたからもの */
+        /* ① わたしのたからもの（大きく調整） */
         .title-img {
             position: absolute;
-            width: 200px;
+            width: 280px; /* 大きくした */
             transform: translateX(-30px);
             opacity: 0;
             z-index: 10;
         }
 
-        /* ② ロゴ */
+        /* ② ロゴ（表示タイミングを1秒早く） */
         .logo-img {
             position: absolute;
-            width: 120px;
-            bottom: 15%;
+            width: 140px;
+            bottom: 20%;
             opacity: 0;
             z-index: 10;
         }
 
         /* アニメーション用クラス */
-        .fade-in-side { opacity: 1; transform: translateX(0); transition: all 1.5s ease; }
-        .fade-in-slow { opacity: 1; transition: opacity 2s ease 1s; }
+        .fade-in-side { opacity: 1; transform: translateX(0); transition: all 1s ease; }
+        .fade-in-logo { opacity: 1; transition: opacity 1.8s ease 1s; } /* 背景と同期 */
         .visible { opacity: 1; }
 
-        /* コンセプトセクション（見切れ演出） */
+        /* コンテンツエリア */
         .content-wrapper { padding: 0 30px; }
         
-        .concept-section {
-            padding: 40px 0 100px;
+        /* 自己紹介セクション */
+        .about-section {
+            padding: 50px 0 80px;
             text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        .concept-text {
-            line-height: 2.5; font-size: 0.9rem;
+        .about-text {
+            line-height: 2.2; font-size: 0.95rem;
             letter-spacing: 0.1em;
+            word-break: keep-all; /* 単語の途中で改行しない */
         }
 
-        /* ⑤ 横スクロールギャラリー */
+        /* ⑤ タップできる横スクロールギャラリー */
         .gallery-h {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 15px;
-            padding-bottom: 20px;
+            padding-bottom: 30px;
             -webkit-overflow-scrolling: touch;
         }
         .gallery-h::-webkit-scrollbar { display: none; }
+        
         .gallery-item {
             flex: 0 0 80%;
             scroll-snap-align: center;
+            position: relative;
+            text-decoration: none; /* リンクの線を消す */
+            color: #fff;
+            overflow: hidden;
         }
+        
         .gallery-item img {
-            width: 100%; height: 50vh;
+            width: 100%; height: 55vh;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        /* ホバー（タップ）時に画像を少し拡大 */
+        .gallery-item:hover img { transform: scale(1.05); }
+
+        /* 画像の上のラベル文字 */
+        .gallery-label {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.2); /* 文字を読みやすくするための影 */
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
+            font-weight: 500;
         }
 
-        footer { padding: 50px 0; text-align: center; font-size: 0.6rem; color: #ccc; }
+        footer { padding: 60px 0; text-align: center; font-size: 0.6rem; color: #ccc; }
     </style>
 </head>
 <body>
 
     <nav id="main-nav">
-        <a href="#">ABOUT</a>
-        <a href="#">GALLERY</a>
-        <a href="#">PRICE</a>
-        <a href="#">CONTACT</a>
+        <a href="#about">ABOUT</a>
+        <a href="#gallery">GALLERY</a>
+        <a href="#price">PRICE</a>
+        <a href="#contact">CONTACT</a>
     </nav>
 
     <div class="hero">
@@ -123,45 +153,15 @@
         <img src="10.png" alt="ロゴ" class="logo-img" id="logo-img">
     </div>
 
-    <div class="content-wrapper">
-        <div class="concept-section">
-            <div class="concept-text">
-                <p>何気ない一瞬が、<br>いつかかけがえのない記憶になる。</p>
-                <p>そのままの、きみがいい。</p>
+    <div class="content-wrapper" id="about">
+        <div class="about-section">
+            <div class="about-text">
+                北海道のど真ん中。<br>
+                たきかわ市在住のフリーランスフォトグラファー<br>
+                mameです。<br><br>
+                のぞいていってやってください。
             </div>
         </div>
 
-        <div class="gallery-h">
-            <div class="gallery-item"><img src="DSC06066 編集済み 1-1.jpg"></div>
-            <div class="gallery-item"><img src="マンスリーフォトバナー.jpg"></div>
-            </div>
-    </div>
-
-    <footer>© MAME PHOTOGRAPHY</footer>
-
-    <script>
-        window.addEventListener('load', () => {
-            const title = document.getElementById('title-img');
-            const logo = document.getElementById('logo-img');
-            const bg = document.getElementById('bg-photo');
-            const nav = document.getElementById('main-nav');
-
-            // ① サイドからタイトル
-            setTimeout(() => {
-                title.classList.add('fade-in-side');
-            }, 500);
-
-            // ② ロゴを浮かび上がらせる
-            setTimeout(() => {
-                logo.classList.add('fade-in-slow');
-            }, 1200);
-
-            // ③ 背景写真とメニューを表示
-            setTimeout(() => {
-                bg.classList.add('visible');
-                nav.classList.add('show');
-            }, 2000);
-        });
-    </script>
-</body>
-</html>
+        <div class="gallery-h" id="gallery">
+            <a
