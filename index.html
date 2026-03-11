@@ -164,4 +164,47 @@
         </div>
 
         <div class="gallery-h" id="gallery">
-            <a
+            <a href="v" class="gallery-item">
+                <img src="DSC08711.jpg" alt="七五三">
+                <span class="gallery-label">七五三</span>
+            </a>
+            <a href="https://www.canva.com/design/DAG_vNAX1Zo/aj9td3SjPxeNIeQSJFuKAw/edit?utm_content=DAG_vNAX1Zo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" class="gallery-item">
+                <img src="gallery_furisode.jpg" alt="振袖">
+                <span class="gallery-label">振袖</span>
+            </a>
+            <a href="https://liff.line.me/..." class="gallery-item">
+                <img src="gallery_birthday.jpg" alt="バースデー">
+                <span class="gallery-label">バースデー</span>
+            </a>
+            <a href="https://liff.line.me/..." class="gallery-item">
+                <img src="gallery_wedding.jpg" alt="ウエディング">
+                <span class="gallery-label">ウエディング</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>© MAME PHOTOGRAPHY</footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            const title = document.getElementById('title-img');
+            const logo = document.getElementById('logo-img');
+            const bg = document.getElementById('bg-photo');
+            const nav = document.getElementById('main-nav');
+
+            // ① サイドからタイトル（少し早く開始）
+            setTimeout(() => {
+                title.classList.add('fade-in-side');
+            }, 300);
+
+            // ② ロゴ、背景写真、メニューをほぼ同時に表示
+            // （タイトルが出てから約1秒後）
+            setTimeout(() => {
+                logo.classList.add('fade-in-logo');
+                bg.classList.add('visible');
+                nav.classList.add('show');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
