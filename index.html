@@ -11,6 +11,7 @@
         :root {
             --bg-color: #ffffff;
             --text-color: #433d3c;
+            --white: #ffffff;
         }
 
         body, html {
@@ -30,95 +31,88 @@
             pointer-events: none;
         }
 
+        /* 上部メニュー */
         nav {
             position: fixed;
             top: 0; width: 100%;
             display: flex; justify-content: center; gap: 30px;
             padding: 30px 0;
             z-index: 100;
-            font-size: 0.7rem; letter-spacing: 0.3em;
+            font-size: 0.75rem; letter-spacing: 0.3em;
             opacity: 0;
         }
-        nav a { text-decoration: none; color: var(--text-color); }
+        nav a { 
+            text-decoration: none; 
+            color: var(--white); /* 動画の上で見やすいように白 */
+            text-shadow: 0 0 10px rgba(0,0,0,0.3);
+            transition: opacity 0.3s;
+        }
+        nav a:hover { opacity: 0.6; }
 
-        /* メインビジュアル */
+        /* ビデオヒーローセクション */
         .hero {
             height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            position: relative;
-            background: #fff;
-        }
-
-        .bg-photo-wrapper {
-            width: 75%;
-            max-width: 400px;
-            height: 70vh;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.03);
-        }
-
-        .bg-photo {
             width: 100%;
-            height: 120%; /* 視差効果のために少し大きく */
-            object-fit: cover;
-            filter: blur(10px); /* 最初はボケている */
-            transform: scale(1.1);
-        }
-
-        .title-img {
-            position: absolute;
-            width: 280px;
-            z-index: 10;
-            filter: brightness(2); /* 最初は光りすぎている */
-            opacity: 0;
-        }
-
-        .logo-img {
-            position: absolute;
-            width: 140px;
-            bottom: 12%;
-            opacity: 0;
-            z-index: 10;
-        }
-
-        /* コンテンツエリア */
-        .content-wrapper { 
             position: relative;
-            background: #fff; 
-            padding: 100px 30px;
-            z-index: 5;
-        }
-        
-        .about-section {
-            text-align: center;
-            margin-bottom: 150px;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .gallery-h {
-            display: flex; gap: 20px;
-            overflow-x: auto;
-            padding-bottom: 50px;
-        }
-        .gallery-h::-webkit-scrollbar { display: none; }
-        
-        .gallery-item {
-            flex: 0 0 85%;
-            position: relative;
-            overflow: hidden;
-            border-radius: 2px;
-        }
-        .gallery-item img { width: 100%; height: 60vh; object-fit: cover; transition: 0.8s ease; }
-        .gallery-item:hover img { transform: scale(1.05); }
-
-        .gallery-label {
-            position: absolute; inset: 0;
             display: flex; justify-content: center; align-items: center;
-            background: rgba(255,255,255,0.1);
-            color: #fff; font-size: 1.2rem; letter-spacing: 0.4em;
-            text-shadow: 0 0 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+            background: #000; /* 動画読み込み前の背景色 */
+        }
+
+        /* 動画の設定 */
+        .video-background {
+            position: absolute;
+            top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        /* 動画の上の薄い膜（これを入れると文字が見やすくなり、プロっぽくなります） */
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.15); /* 15%だけ黒を重ねる */
+            z-index: 2;
+        }
+
+        /* 中央のロゴ */
+        .center-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .logo-main {
+            width: 200px; /* お好みのサイズに調整 */
+            max-width: 80%;
+            opacity: 0;
+            filter: brightness(0) invert(1); /* 黒いロゴを白く反転させる場合に使用。不要なら消してください */
+        }
+
+        .title-sub {
+            width: 280px;
+            max-width: 70%;
+            margin-bottom: 20px;
+            opacity: 0;
+        }
+
+        /* コンテンツ（自己紹介以降） */
+        .main-content {
+            position: relative;
+            z-index: 20;
+            background: #fff;
+            padding: 100px 30px;
+        }
+
+        .about-text {
+            text-align: center;
+            line-height: 3;
+            letter-spacing: 0.2em;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         footer { padding: 80px 0; text-align: center; font-size: 0.6rem; color: #aaa; }
@@ -135,28 +129,26 @@
         <a href="#contact">CONTACT</a>
     </nav>
 
-    <div class="hero">
-        <div class="bg-photo-wrapper">
-            <img src="DSC06066 編集済み 1-1.jpg" alt="背景" class="bg-photo" id="bg-photo">
-        </div>
-        <img src="わたしのたからもの.png" alt="タイトル" class="title-img" id="title-img">
-        <img src="10.png" alt="ロゴ" class="logo-img" id="logo-img">
-    </div>
+    <section class="hero">
+        <video autoplay muted loop playsinline class="video-background">
+            <source src="ホームページ用動画.mov" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
 
-    <div class="content-wrapper">
-        <div class="about-section" id="about">
-            <p style="line-height: 3; letter-spacing: 0.2em;">
-                北海道のど真ん中。<br>
-                たきかわ市在住の<br>
-                フリーランスフォトグラファー mameです。<br>
-                のぞいていってやってください。
-            </p>
+        <div class="center-content">
+            <img src="わたしのたからもの.png" alt="title" class="title-sub" id="title-img">
+            <br>
+            <img src="10.png" alt="logo" class="logo-main" id="logo-img">
         </div>
+    </section>
 
-        <div class="gallery-h" id="gallery">
-            <a href="https://www.canva.com/design/DAG_vNAX1Zo/aj9td3SjPxeNIeQSJFuKAw/edit?utm_content=DAG_vNAX1Zo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" class="gallery-item"><img src="DSC08711.jpg"><span class="gallery-label">七五三</span></a>
-            <a href="#" class="gallery-item"><img src="gallery_furisode.jpg"><span class="gallery-label">振袖</span></a>
-            <a href="#" class="gallery-item"><img src="gallery_birthday.jpg"><span class="gallery-label">バースデー</span></a>
+    <div class="main-content" id="about">
+        <div class="about-text">
+            北海道のど真ん中。<br>
+            たきかわ市在住のフリーランスフォトグラファー<br>
+            mameです。<br><br>
+            のぞいていってやってください。
         </div>
     </div>
 
@@ -175,41 +167,23 @@
         })
         .to("#title-img", {
             opacity: 1,
-            filter: "brightness(1)",
             duration: 2,
             ease: "power2.out"
         }, "-=1.5")
-        .to("#bg-photo", {
-            filter: "blur(0px)",
-            scale: 1,
-            duration: 3,
-            ease: "power2.out"
-        }, "-=2")
         .to(["#logo-img", "#nav"], {
             opacity: 1,
-            duration: 1.5
-        }, "-=1.5");
+            duration: 1.5,
+            stagger: 0.3
+        }, "-=1.0");
 
-        // --- スクロール連動：視差効果 ---
-        gsap.to("#bg-photo", {
-            yPercent: 20,
-            ease: "none",
+        // スクロール時に動画を少し暗くする演出
+        gsap.to(".video-overlay", {
+            background: "rgba(0,0,0,0.6)",
             scrollTrigger: {
                 trigger: ".hero",
                 start: "top top",
                 end: "bottom top",
                 scrub: true
-            }
-        });
-
-        // --- スクロール連動：自己紹介の浮き上がり ---
-        gsap.to(".about-section", {
-            opacity: 1,
-            y: 0,
-            duration: 1.5,
-            scrollTrigger: {
-                trigger: ".about-section",
-                start: "top 85%",
             }
         });
     </script>
